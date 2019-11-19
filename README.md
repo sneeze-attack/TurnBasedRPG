@@ -1,5 +1,5 @@
 # TurnBasedRPG
-A simple example for a turn-based RPG made in Phaser 3 following an online tutorial series. Uses [Babel 7](https://babeljs.io) and [Webpack 4](https://webpack.js.org/)
+A simple example for a turn-based RPG made in Phaser 3 following an online tutorial series. Uses [Babel 7](https://babeljs.io), [Webpack 4](https://webpack.js.org/), and [ESLint](https://eslint.org)
 
 Follows the tutorial found here:
 
