@@ -6,4 +6,8 @@ export default class ActionsMenu extends Menu {
     Menu.call(this, scene, x, y);
     this.addMenuItem('Attack');
   }
+
+  confirm() {
+    this.scene.events.emit('SelectEnemies');
+  }
 }

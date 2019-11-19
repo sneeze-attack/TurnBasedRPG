@@ -1,7 +1,7 @@
 /* global Phaser
 no-undef: off */
 export default class MenuItem extends Phaser.GameObjects.Text {
-  constructor(x, y, text, scene) {
+  constructor(scene, x, y, text) {
     super(scene);
     Phaser.GameObjects.Text.call(this, scene, x, y, text, { color: '#ffffff', align: 'left', fontSize: 15 });
   }
