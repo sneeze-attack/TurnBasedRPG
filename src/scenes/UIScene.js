@@ -39,9 +39,6 @@ export default class UIScene extends Phaser.Scene {
     // load data from BattleScene
     this.battleScene = this.scene.get('BattleScene');
 
-    // this.remapHeroes();
-    // this.remapEnemies();
-
     // listen for keyboard events
     this.input.keyboard.on('keydown', this.onKeyInput, this);
 
@@ -62,17 +59,16 @@ export default class UIScene extends Phaser.Scene {
     this.message = new Message(this, this.battleScene.events);
     this.add.existing(this.message);
 
-    //this.battleScene.nextTurn();
     this.createMenu();
   }
 
   remapHeroes() {
-    let heroes = this.battleScene.heroes;
+    const heroes = this.battleScene.heroes;
     this.heroesMenu.remap(heroes);
   }
 
   remapEnemies() {
-    let enemies = this.battleScene.enemies;
+    const enemies = this.battleScene.enemies;
     this.enemiesMenu.remap(enemies);
   }
 
@@ -85,7 +81,6 @@ export default class UIScene extends Phaser.Scene {
       } else if (event.code === 'ArrowRight' || event.code === 'Shift') {
         //
       } else if (event.code === 'Space' || event.code === 'ArrowLeft') {
-        console.log('ArrowLeft or Space detected..1');
         this.currentMenu.confirm();
       }
     }
