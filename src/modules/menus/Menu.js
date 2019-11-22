@@ -11,29 +11,36 @@ export default class Menu extends Phaser.GameObjects.Container {
     this.heroes = heroes;
     this.x = x;
     this.y = y;
+    this.selected = false;
   }
 
   addMenuItem(unit) {
     const menuItem = new MenuItem(this.scene, 0, this.menuItems.length * 20, unit);
     this.menuItems.push(menuItem);
     this.add(menuItem);
+    return menuItem;
   }
 
+  // menu navigation
   moveSelectionUp() {
     this.menuItems[this.menuItemIndex].deselect();
-    this.menuItemIndex -= 1;
-    if (this.menuItemIndex < 0) {
-      this.menuItemIndex = this.menuItems.length - 1;
-    }
+    do {
+      this.menuItemIndex -= 1;
+      if (this.menuItemIndex < 0) {
+        this.menuItemIndex = this.menuItems.length - 1;
+      }
+    } while (!this.menuItems[this.menuItemIndex].active);
     this.menuItems[this.menuItemIndex].select();
   }
 
   moveSelectionDown() {
     this.menuItems[this.menuItemIndex].deselect();
-    this.menuItemIndex += 1;
-    if (this.menuItemIndex >= this.menuItems.length) {
-      this.menuItemIndex = 0;
-    }
+    do {
+      this.menuItemIndex += 1;
+      if (this.menuItemIndex >= this.menuItems.length) {
+        this.menuItemIndex = 0;
+      }
+    } while (!this.menuItems[this.menuItemIndex].active);
     this.menuItems[this.menuItemIndex].select();
   }
 
@@ -44,13 +51,28 @@ export default class Menu extends Phaser.GameObjects.Container {
     }
     this.menuItems[this.menuItemIndex].deselect();
     this.menuItemIndex = index;
+    while (!this.menuItems[this.menuItemIndex].active) {
+      this.menuItemIndex += 1;
+      if (this.menuItemIndex >= this.menuItems.length) {
+        this.menuItemIndex = 0;
+      }
+      if (this.menuItemIndex === index) {
+        return;
+      }
+    }
     this.menuItems[this.menuItemIndex].select();
+    this.selected = true;
   }
 
   // deselect this menu
   deselect() {
     this.menuItems[this.menuItemIndex].deselect();
     this.menuItemIndex = 0;
+    this.selected = false;
+  }
+
+  confirm() {
+    // when player confirms selection, do the action
   }
 
   clear() {
@@ -65,7 +87,8 @@ export default class Menu extends Phaser.GameObjects.Container {
     this.clear();
     for (let i = 0; i < units.length; i += 1) {
       const unit = units[i];
-      this.addMenuItem(unit.type);
+      unit.setMenuItem(this.addMenuItem(unit.type));
     }
+    this.menuItemIndex = 0;
   }
 }

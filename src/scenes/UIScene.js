@@ -39,19 +39,31 @@ export default class UIScene extends Phaser.Scene {
     // load data from BattleScene
     this.battleScene = this.scene.get('BattleScene');
 
-    this.remapHeroes();
-    this.remapEnemies();
+    // this.remapHeroes();
+    // this.remapEnemies();
+
+    // listen for keyboard events
     this.input.keyboard.on('keydown', this.onKeyInput, this);
 
-    // listen for 'PlayerSelect' event
+    // when its the player unit's turn to move
     this.battleScene.events.on('PlayerSelect', this.onPlayerSelect, this);
 
+    // when the action on the menu is Selected
+    // for now we have only one action so we dont send an action id
+    this.events.on('SelectedAction', this.onSelectedAction, this);
+
+    // an enemy is selected
     this.events.on('Enemy', this.onEnemy, this);
 
+    // when the scene receives wake event
+    this.sys.events.on('wake', this.createMenu, this);
+
+    // the message describing the current action
     this.message = new Message(this, this.battleScene.events);
     this.add.existing(this.message);
 
-    this.battleScene.nextTurn();
+    //this.battleScene.nextTurn();
+    this.createMenu();
   }
 
   remapHeroes() {
@@ -65,12 +77,15 @@ export default class UIScene extends Phaser.Scene {
   }
 
   onKeyInput(event) {
-    if (this.currentMenu) {
-      if (event.keyCode === 'ArrowUp') {
+    if (this.currentMenu && this.currentMenu.selected) {
+      if (event.code === 'ArrowUp') {
         this.currentMenu.moveSelectionUp();
+      } else if (event.code === 'ArrowDown') {
+        this.currentMenu.moveSelectionDown();
       } else if (event.code === 'ArrowRight' || event.code === 'Shift') {
         //
       } else if (event.code === 'Space' || event.code === 'ArrowLeft') {
+        console.log('ArrowLeft or Space detected..1');
         this.currentMenu.confirm();
       }
     }
@@ -82,7 +97,7 @@ export default class UIScene extends Phaser.Scene {
     this.currentMenu = this.actionsMenu;
   }
 
-  onSelectEnemies() {
+  onSelectedAction() {
     this.currentMenu = this.enemiesMenu;
     this.enemiesMenu.select(0);
   }
@@ -93,5 +108,14 @@ export default class UIScene extends Phaser.Scene {
     this.enemiesMenu.deselect();
     this.currentMenu = null;
     this.battleScene.receivePlayerSelection('attack', index);
+  }
+
+  createMenu() {
+    // map hero menu items to heroes
+    this.remapHeroes();
+    // map enemies menu items to enemies
+    this.remapEnemies();
+    // first move
+    this.battleScene.nextTurn();
   }
 }

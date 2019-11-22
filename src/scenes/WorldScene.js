@@ -70,6 +70,8 @@ export default class WorldScene extends Phaser.Scene {
     }
     // make player and zones interact.. when player overlaps the zone the onMeetEnemy method is called
     this.physics.add.overlap(this.player, this.spawns, this.onMeetEnemy, false, this);
+
+    this.sys.events.on('wake', this.wake, this);
   }
 
   onMeetEnemy(player, zone) {
@@ -80,6 +82,13 @@ export default class WorldScene extends Phaser.Scene {
     this.cameras.main.shake(300);
     // switch to BattleScene
     this.scene.switch('BattleScene');
+  }
+
+  wake() {
+    this.cursors.left.reset();
+    this.cursors.right.reset();
+    this.cursors.up.reset();
+    this.cursors.down.reset();
   }
 
   update() {
