@@ -10,5 +10,7 @@ https://gamedevacademy.org/how-to-create-a-turn-based-rpg-game-in-phaser-3-part-
 https://gamedevacademy.org/how-to-create-a-turn-based-rpg-in-phaser-3-part-3/
 
 
+All further development updates to this app will occur [here](https://aaatowing.duckdns.org/gitea/SneezeAttack/TurnBasedRPG)
+
 ## Live Demo
-[Demo Site](http://turnbasedrpg.duckdns.org:8090)
+[Demo Site](https://aaatowing.duckdns.org/TurnBasedRPG)
